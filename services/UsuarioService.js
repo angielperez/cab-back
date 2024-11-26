@@ -3,8 +3,15 @@ import { Persona } from "../models/persona.js";
 import Usuario from "../models/usuario.js";
 import bcrypt from 'bcrypt'
 class UsuarioService{
+    validate = function(request) {
+        if(request.usuario == null || request.usuario == "") throw "El nombre de usuario es requerido";
+        if(request.clave == null || request.clave == "") throw "La contraseña es requerida";
+        if(request.id_persona == null || request.id_persona == "") throw "La persona es requerida";
+        if(request.estado == null || request.estado == "") throw "El estado es requerido";
+    }
     create = async function (request) {
         try {
+            this.validate(request);
             const password = await bcrypt.hash(request.clave, 10);
             let validation = await this.validateUsernameExist(request.usuario);
             if (validation == true) {
@@ -30,6 +37,7 @@ class UsuarioService{
 
     update = async function (id, request) {
         try {
+            this.validate(request);
             const user = await Usuario.findByPk(id);
             if (user == null) {
                 throw "Usuario no existe";

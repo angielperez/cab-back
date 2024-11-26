@@ -3,9 +3,13 @@ import { retornar } from "../helper.js"
 import bcrypt from 'bcrypt'
 import { createToken } from "../token-actions.js";
 class AuthenticationService{
-    
+    validate = function(request) {
+        if(request.username == null || request.username == "") throw "Nombre de usuario requerido";
+        if(request.password == null || request.password == "") throw "Contraseña requerida";
+    }
     login = async function (request) {
         try {
+            this.validate(request);
             const user = await Usuario.findOne({ where: { usuario: request.username } });
             if(user == null) throw "Credenciales invalidas";
             const verification = await bcrypt.compare(request.password, user.clave);

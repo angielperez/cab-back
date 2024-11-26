@@ -1,8 +1,18 @@
 import { retornar } from "../helper.js";
 import { Persona } from "../models/persona.js";
 class PersonaService{
+    validate = function(request) {
+        if(request.tipo == null || request.tipo == "") throw "El tipo es requerido";
+        if(request.identificacion == null || request.identificacion == "") throw "La identificacion es requerida";
+        if(request.nombres == null || request.nombres == "") throw "El nombres es requerido";
+        if(request.apellidos == null || request.apellidos == "") throw "El apellidos es requerido";
+        if(request.telefono == null || request.telefono == "") throw "El telefono es requerido";
+        if(request.correo == null || request.correo == "") throw "El correo es requerido";
+        if(request.estado == null || request.estado == "") throw "El estado es requerido";
+    }
     create = async function (request) {
         try {
+            this.validate(request);
             let validation = await this.validateEmailExist(request.correo);
             if (validation == true) {
                 throw "Correo electronico ya existe";
@@ -17,6 +27,7 @@ class PersonaService{
 
     update = async function (id, request) {
         try {
+            this.validate(request);
             const model = await Persona.findByPk(id);
             if (model == null) {
                 throw "Persona no existe";

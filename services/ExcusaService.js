@@ -3,8 +3,13 @@ import Excusa from "../models/excusa.js";
 import { Horario } from "../models/horario.js";
 import { Persona } from "../models/persona.js";
 class ExcusaService{
+    validate = function(request) {
+        if(request.observaciones == null || request.observaciones == "") throw "Observaciones requeridas";
+        if(request.fecha == null || request.fecha == "") throw "Fecha requerida";
+    }
     create = async function (request) {
         try {
+            this.validate(request);
             let validation = await this.validateExcusaExist(request.id_horario);
             if (validation == true) {
                 throw "Ya hay una excusa asociada a este horario y persona";
@@ -19,6 +24,7 @@ class ExcusaService{
 
     update = async function (id, request) {
         try {
+            this.validate(request);
             const model = await Excusa.findByPk(id);
             if (model == null) {
                 throw "Excusa no existe";

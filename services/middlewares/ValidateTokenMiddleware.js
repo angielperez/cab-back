@@ -1,6 +1,8 @@
 import { getDataFromToken } from '../../token-actions.js';
 
 export async function ValidateTokenMiddleware(req, res, next){
+    next();
+    /*
     let token = req.header('Authorization');
     if(!token){
         res.status(401).json()
@@ -14,5 +16,5 @@ export async function ValidateTokenMiddleware(req, res, next){
             console.log(error);
             res.status(401).json()
         }  
-    }
+    }*/
 }

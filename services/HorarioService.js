@@ -15,6 +15,12 @@ class HorarioService{
             });
             for (let i = 0; i < request.dias.length; i++) {
                 const element = request.dias[i];
+                if(element.dia == null || element.dia == "") throw "El dia en todos los horarios es requerido";
+                if(element.entrada == null || element.entrada == "") throw "La entrada en todos los horarios es requerido";
+                if(element.salida == null || element.salida == "") throw "La salida en todos los horarios es requerido";
+            }
+            for (let i = 0; i < request.dias.length; i++) {
+                const element = request.dias[i];
                 let model = Horario.build({
                     id_persona: request.id_persona,
                     dia_semana: element.dia,
