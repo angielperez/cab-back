@@ -15,13 +15,14 @@ class PersonaService{
     }
 
     validateContinue(request) {
-        if(/^[0-9]*$/.test(request.identificacion) == false) throw new Error("La identificación debe ser numerica");
-        if(parseInt(request.identificacion) < 10000 || parseInt(request.identificacion) > 9999999999) throw "La identificacion debe tener entre 5 y 10 caracteres.";
+        const regexNumeric = /^[0-9]*$/
+        if(!regexNumeric.test(request.identificacion)) throw new Error("La identificación debe ser numerica");
+        if(parseInt(request.identificacion) < 10000 || parseInt(request.identificacion) > 9999999999) throw new Error("La identificacion debe tener entre 5 y 10 caracteres.");
         
         if(request.nombres.length < 10 || request.nombres.length > 20) throw new Error("Los nombres deben tener entre 10 y 20 caracteres.");
         if(request.apellidos.length < 10 || request.apellidos.length > 20) throw new Error("Los apellidos deben tener entre 10 y 20 caracteres.");
         
-        if(/^[0-9]*$/.test(request.telefono) == false) throw new Error("El telefono debe ser numerico");
+        if(!regexNumeric.test(request.telefono)) throw new Error("El telefono debe ser numerico");
         if(request.telefono.length != 10) throw new Error("El telefono debe tener 10 digitos.");
 
         if(!isEmail(request.email)) throw new Error("La direccion de correo eléctronico no es valida.");
@@ -33,7 +34,7 @@ class PersonaService{
             this.validate(request);
             let validation = await this.validateEmailExist(request.correo);
             if (validation == true) {
-                throw "Correo electronico ya existe";
+                throw new Error("Correo electronico ya existe");
             }
             const model = Persona.build(request);
             await model.save();
@@ -53,7 +54,7 @@ class PersonaService{
             if(model.correo != request.correo){
                 let validation = await this.validateEmailExist(request.correo);
                 if (validation == true) {
-                    throw "Correo electronico ya existe";
+                    throw new Error("Correo electronico ya existe");
                 }
             }
 

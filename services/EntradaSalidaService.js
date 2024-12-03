@@ -6,15 +6,15 @@ import { Persona } from "../models/persona.js";
 class EntradaSalidaService{
     validateAccess = async function (request) {
         try {
-            if(request.identificacion == null || request.identificacion == "") throw "Documento requerido";
+            if(request.identificacion == null || request.identificacion == "") throw new Error("Documento requerido");
             let people = await this.findPeopleByIdentificacion(request.identificacion);
             if (people == null) {
-                throw "Numero de identificacion no valido";
+                throw new Error("Numero de identificacion no valido");
             }
 
             let validHorario = await this.validateHoraryValid(people.id)
             if(!validHorario){
-                throw "No se encuentra en un horario valido";
+                throw new Error("No se encuentra en un horario valido");
             }
             const model = EntradaSalida.build({ 
                 tipo: request.tipo,

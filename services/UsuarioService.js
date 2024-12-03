@@ -4,13 +4,13 @@ import Usuario from "../models/usuario.js";
 import bcrypt from 'bcrypt'
 class UsuarioService{
     validate = function(request) {
-        if(request.usuario == null || request.usuario == "") throw "El nombre de usuario es requerido";
-        if(request.clave == null || request.clave == "") throw "La contraseña es requerida";
-        if(request.id_persona == null || request.id_persona == "") throw "La persona es requerida";
-        if(request.estado == null || request.estado == "") throw "El estado es requerido";
+        if(request.usuario == null || request.usuario == "") throw new Error("El nombre de usuario es requerido");
+        if(request.clave == null || request.clave == "") throw new Error("La contraseña es requerida");
+        if(request.id_persona == null || request.id_persona == "") throw new Error("La persona es requerida");
+        if(request.estado == null || request.estado == "") throw new Error("El estado es requerido");
 
-        if(request.usuario.length < 10 || request.usuario.length > 20) throw "El nombre de usuario debe tener entre 10 y 20 caracteres.";
-        if(request.clave.length < 10 || request.clave.length > 20) throw "La contraseña debe tener entre 10 y 20 caracteres.";
+        if(request.usuario.length < 10 || request.usuario.length > 20) throw new Error("El nombre de usuario debe tener entre 10 y 20 caracteres.");
+        if(request.clave.length < 10 || request.clave.length > 20) throw new Error("La contraseña debe tener entre 10 y 20 caracteres.");
 
     }
     create = async function (request) {
@@ -19,12 +19,12 @@ class UsuarioService{
             const password = await bcrypt.hash(request.clave, 10);
             let validation = await this.validateUsernameExist(request.usuario);
             if (validation == true) {
-                throw "Nombre de usuario ya existe";
+                throw new Error("Nombre de usuario ya existe");
             }
 
             validation = await this.validatePeopleExist(request.id_persona)
             if (validation == false) {
-                throw "Persona asociada no esta registrada";
+                throw new Error("Persona asociada no esta registrada");
             }
 
             const user = Usuario.build({ 
@@ -44,19 +44,19 @@ class UsuarioService{
             this.validate(request);
             const user = await Usuario.findByPk(id);
             if (user == null) {
-                throw "Usuario no existe";
+                throw new Error("Usuario no existe");
             }
             let validation = null
             if(user.usuario != request.usuario){
                 let validation = await this.validateUsernameExist(request.usuario);
                 if (validation == true) {
-                    throw "Nombre de usuario ya existe";
+                    throw new Error("Nombre de usuario ya existe");
                 }
             }
 
             validation = await this.validatePeopleExist(request.id_persona)
             if (validation == false) {
-                throw "Persona asociada no esta registrada";
+                throw new Error("Persona asociada no esta registrada");
             }
 
             user.id_persona = request.id_persona

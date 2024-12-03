@@ -4,12 +4,12 @@ import { Horario } from "../models/horario.js";
 import { Persona } from "../models/persona.js";
 class ExcusaService{
     validate = function(request) {
-        if(request.fecha == null || request.fecha == "") throw "Fecha requerida";
-        if(request.id_persona == null || request.id_persona == "") throw "Persona es requerida";
-        if(request.id_horario == null || request.id_horario == "") throw "Horario es requerido";
-        if(request.observaciones == null || request.observaciones == "") throw "Observaciones requeridas";
+        if(request.fecha == null || request.fecha == "") throw new Error("Fecha requerida");
+        if(request.id_persona == null || request.id_persona == "") throw new Error("Persona es requerida");
+        if(request.id_horario == null || request.id_horario == "") throw new Error("Horario es requerido");
+        if(request.observaciones == null || request.observaciones == "") throw new Error("Observaciones requeridas");
 
-        if(request.observaciones.length < 5 || request.observaciones.length > 100) throw "Las observaciones deben tener entre 5 y 100 caracteres.";
+        if(request.observaciones.length < 5 || request.observaciones.length > 100) throw new Error("Las observaciones deben tener entre 5 y 100 caracteres.");
 
     }
     create = async function (request) {
@@ -17,7 +17,7 @@ class ExcusaService{
             this.validate(request);
             let validation = await this.validateExcusaExist(request.id_horario);
             if (validation == true) {
-                throw "Ya hay una excusa asociada a este horario y persona";
+                throw new Error("Ya hay una excusa asociada a este horario y persona");
             }
             const model = Excusa.build(request);
             await model.save();
@@ -32,12 +32,12 @@ class ExcusaService{
             this.validate(request);
             const model = await Excusa.findByPk(id);
             if (model == null) {
-                throw "Excusa no existe";
+                throw new Error("Excusa no existe");
             }
             if(model.id_horario != request.id_horario){
                 let validation = await this.validateExcusaExist(request.id_horario);
                 if (validation == true) {
-                    throw "Ya hay una excusa asociada a este horario y persona";
+                    throw new Error("Ya hay una excusa asociada a este horario y persona");
                 }
             }
 

@@ -6,7 +6,7 @@ class HorarioService{
         try {
             let validation = await this.validatePeopleExist(request.id_persona)
             if (validation == false) {
-                throw "Persona asociada no esta registrada";
+                throw new Error("Persona asociada no esta registrada");
             }
             await Horario.destroy({
                 where: {
@@ -15,9 +15,9 @@ class HorarioService{
             });
             for (let i = 0; i < request.dias.length; i++) {
                 const element = request.dias[i];
-                if(element.dia == null || element.dia == "") throw "El dia en todos los horarios es requerido";
-                if(element.entrada == null || element.entrada == "") throw "La entrada en todos los horarios es requerido";
-                if(element.salida == null || element.salida == "") throw "La salida en todos los horarios es requerido";
+                if(element.dia == null || element.dia == "") throw new Error("El dia en todos los horarios es requerido");
+                if(element.entrada == null || element.entrada == "") throw new Error("La entrada en todos los horarios es requerido");
+                if(element.salida == null || element.salida == "") throw new Error("La salida en todos los horarios es requerido");
             }
             for (let i = 0; i < request.dias.length; i++) {
                 const element = request.dias[i];
