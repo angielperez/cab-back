@@ -6,6 +6,7 @@ class AuthenticationService{
     validate = function(request) {
         if(request.username == null || request.username == "") throw "Nombre de usuario requerido";
         if(request.password == null || request.password == "") throw "Contraseña requerida";
+        if(request.username.length < 10 || request.username.length > 20) throw "Nombre de usuario invalido";
     }
     login = async function (request) {
         try {

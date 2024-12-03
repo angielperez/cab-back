@@ -8,6 +8,10 @@ class UsuarioService{
         if(request.clave == null || request.clave == "") throw "La contraseña es requerida";
         if(request.id_persona == null || request.id_persona == "") throw "La persona es requerida";
         if(request.estado == null || request.estado == "") throw "El estado es requerido";
+
+        if(request.usuario.length < 10 || request.usuario.length > 20) throw "El nombre de usuario debe tener entre 10 y 20 caracteres.";
+        if(request.clave.length < 10 || request.clave.length > 20) throw "La contraseña debe tener entre 10 y 20 caracteres.";
+
     }
     create = async function (request) {
         try {

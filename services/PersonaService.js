@@ -1,4 +1,4 @@
-import { retornar } from "../helper.js";
+import { isEmail, retornar } from "../helper.js";
 import { Persona } from "../models/persona.js";
 class PersonaService{
     validate = function(request) {
@@ -7,8 +7,23 @@ class PersonaService{
         if(request.nombres == null || request.nombres == "") throw "El nombres es requerido";
         if(request.apellidos == null || request.apellidos == "") throw "El apellidos es requerido";
         if(request.telefono == null || request.telefono == "") throw "El telefono es requerido";
+        if(request.direccion == null || request.direccion == "") throw "La dirección es requerida";
         if(request.correo == null || request.correo == "") throw "El correo es requerido";
         if(request.estado == null || request.estado == "") throw "El estado es requerido";
+
+        if(/^[0-9]*$/.test(request.identificacion) == false) throw "La identificación debe ser numerica";
+        if(parseInt(request.identificacion) < 10000 || parseInt(request.identificacion) > 9999999999) throw "La identificacion debe tener entre 5 y 10 caracteres.";
+        
+        if(request.nombres.length < 10 || request.nombres.length > 20) throw "Los nombres deben tener entre 10 y 20 caracteres.";
+        if(request.apellidos.length < 10 || request.apellidos.length > 20) throw "Los apellidos deben tener entre 10 y 20 caracteres.";
+        
+        if(/^[0-9]*$/.test(request.telefono) == false) throw "El telefono debe ser numerico";
+        if(request.telefono.length != 10) throw "El telefono debe tener 10 digitos.";
+
+        if(!isEmail(request.email)) throw "La direccion de correo eléctronico no es valida.";
+        
+        if(request.direccion.length < 5 || request.direccion.length > 30) throw "La dirección deben tener entre 5 y 30 caracteres.";
+
     }
     create = async function (request) {
         try {

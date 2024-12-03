@@ -4,8 +4,13 @@ import { Horario } from "../models/horario.js";
 import { Persona } from "../models/persona.js";
 class ExcusaService{
     validate = function(request) {
-        if(request.observaciones == null || request.observaciones == "") throw "Observaciones requeridas";
         if(request.fecha == null || request.fecha == "") throw "Fecha requerida";
+        if(request.id_persona == null || request.id_persona == "") throw "Persona es requerida";
+        if(request.id_horario == null || request.id_horario == "") throw "Horario es requerido";
+        if(request.observaciones == null || request.observaciones == "") throw "Observaciones requeridas";
+
+        if(request.observaciones.length < 5 || request.observaciones.length > 100) throw "Las observaciones deben tener entre 5 y 100 caracteres.";
+
     }
     create = async function (request) {
         try {
