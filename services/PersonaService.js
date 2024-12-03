@@ -2,28 +2,31 @@ import { isEmail, retornar } from "../helper.js";
 import { Persona } from "../models/persona.js";
 class PersonaService{
     validate = function(request) {
-        if(request.tipo == null || request.tipo == "") throw "El tipo es requerido";
-        if(request.identificacion == null || request.identificacion == "") throw "La identificacion es requerida";
-        if(request.nombres == null || request.nombres == "") throw "El nombres es requerido";
-        if(request.apellidos == null || request.apellidos == "") throw "El apellidos es requerido";
-        if(request.telefono == null || request.telefono == "") throw "El telefono es requerido";
-        if(request.direccion == null || request.direccion == "") throw "La dirección es requerida";
-        if(request.correo == null || request.correo == "") throw "El correo es requerido";
-        if(request.estado == null || request.estado == "") throw "El estado es requerido";
+        if(request.tipo == null || request.tipo == "") throw new Error("El tipo es requerido");
+        if(request.identificacion == null || request.identificacion == "") throw new Error("La identificacion es requerida");
+        if(request.nombres == null || request.nombres == "") throw new Error("El nombres es requerido");
+        if(request.apellidos == null || request.apellidos == "") throw new Error("El apellidos es requerido");
+        if(request.telefono == null || request.telefono == "") throw new Error("El telefono es requerido");
+        if(request.direccion == null || request.direccion == "") throw new Error("La dirección es requerida");
+        if(request.correo == null || request.correo == "") throw new Error("El correo es requerido");
+        if(request.estado == null || request.estado == "") throw new Error("El estado es requerido");
 
-        if(/^[0-9]*$/.test(request.identificacion) == false) throw "La identificación debe ser numerica";
+        validateContinue(request)
+    }
+
+    validateContinue(request) {
+        if(/^[0-9]*$/.test(request.identificacion) == false) throw new Error("La identificación debe ser numerica");
         if(parseInt(request.identificacion) < 10000 || parseInt(request.identificacion) > 9999999999) throw "La identificacion debe tener entre 5 y 10 caracteres.";
         
-        if(request.nombres.length < 10 || request.nombres.length > 20) throw "Los nombres deben tener entre 10 y 20 caracteres.";
-        if(request.apellidos.length < 10 || request.apellidos.length > 20) throw "Los apellidos deben tener entre 10 y 20 caracteres.";
+        if(request.nombres.length < 10 || request.nombres.length > 20) throw new Error("Los nombres deben tener entre 10 y 20 caracteres.");
+        if(request.apellidos.length < 10 || request.apellidos.length > 20) throw new Error("Los apellidos deben tener entre 10 y 20 caracteres.");
         
-        if(/^[0-9]*$/.test(request.telefono) == false) throw "El telefono debe ser numerico";
-        if(request.telefono.length != 10) throw "El telefono debe tener 10 digitos.";
+        if(/^[0-9]*$/.test(request.telefono) == false) throw new Error("El telefono debe ser numerico");
+        if(request.telefono.length != 10) throw new Error("El telefono debe tener 10 digitos.");
 
-        if(!isEmail(request.email)) throw "La direccion de correo eléctronico no es valida.";
+        if(!isEmail(request.email)) throw new Error("La direccion de correo eléctronico no es valida.");
         
-        if(request.direccion.length < 5 || request.direccion.length > 30) throw "La dirección deben tener entre 5 y 30 caracteres.";
-
+        if(request.direccion.length < 5 || request.direccion.length > 30) throw new Error("La dirección deben tener entre 5 y 30 caracteres.");
     }
     create = async function (request) {
         try {
